@@ -1,11 +1,8 @@
 using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes;
-using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Timers;
 
-using Steamworks;
-using Newtonsoft.Json.Linq;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using CounterStrikeSharp.API.Modules.Admin;
@@ -43,6 +40,9 @@ public class PluginConfig : BasePluginConfig
 
     [JsonPropertyName("BlockTradeBanned")]
     public bool BlockTradeBanned { get; set; } = false;
+
+    [JsonPropertyName("BlockVACBanned")]
+    public bool BlockVACBanned { get; set; } = false;
 
     [JsonPropertyName("SteamGroupID")]
     public string SteamGroupID { get; set; } = "";
@@ -190,7 +190,8 @@ public class SteamRestrictPlugin : BasePlugin, IPluginConfig<PluginConfig>
             (Config.BlockPrivateProfile, 1, userInfo.IsPrivate ? 0 : 1),
             (Config.BlockTradeBanned, 1, userInfo.IsTradeBanned ? 0 : 1),
             (Config.BlockGameBanned, 1, userInfo.IsGameBanned ? 0 : 1),
-            (!string.IsNullOrEmpty(Config.SteamGroupID), 1, userInfo.IsInSteamGroup ? 0 : 1)
+            (!string.IsNullOrEmpty(Config.SteamGroupID), 1, userInfo.IsInSteamGroup ? 0 : 1),
+            (Config.BlockVACBanned, 1, userInfo.IsVACBanned ? 0 : 1),
         };
 
         return configChecks.Any(check => check.Item1 && check.Item2 != -1 && check.Item3 < check.Item2);

@@ -14,6 +14,7 @@ public class SteamUserInfo
 	public bool IsPrivate { get; set; }
 	public bool HasPrime { get; set; }
 	public bool IsTradeBanned { get; set; }
+	public bool IsVACBanned { get; set; }
 	public bool IsGameBanned { get; set; }
 	public bool IsInSteamGroup { get; set; }
 }
@@ -80,7 +81,11 @@ public class SteamService
 	{
 		var url = $"https://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key={_steamWebAPIKey}&steamids={steamId}";
 		var json = await GetApiResponseAsync(url);
-		if (json != null) ParseTradeBanStatus(json, userInfo);
+		if (json != null)
+		{
+			ParseTradeBanStatus(json, userInfo);
+			ParseVACBanStatus(json, userInfo);
+		}
 	}
 
 	private async Task FetchGameBanStatusAsync(string steamId, SteamUserInfo userInfo)
@@ -170,5 +175,12 @@ public class SteamService
 		JObject data = JObject.Parse(json);
 		JToken? userGameBan = data["players"]?.FirstOrDefault();
 		userInfo.IsGameBanned = userGameBan != null && (bool)(userGameBan["IsGameBanned"] ?? false);
+	}
+
+	private void ParseVACBanStatus(string json, SteamUserInfo userInfo)
+	{
+		JObject data = JObject.Parse(json);
+		JToken? userGameBan = data["players"]?.FirstOrDefault();
+		userInfo.IsVACBanned = userGameBan != null && (bool)(userGameBan["VACBanned"] ?? false);
 	}
 }

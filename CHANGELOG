@@ -1,6 +1,8 @@
 -- 2024. 04. 06 - v1.2.0
 
 - feat: Created SteamService model
+- feat: Block players if VAC banned
+- feat: Block players if not in steam group
 - optimise: Full plugin refactoring
 
 -- 2024. 02. 14 - v1.1.3
