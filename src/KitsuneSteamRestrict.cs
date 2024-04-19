@@ -186,7 +186,7 @@ public class SteamRestrictPlugin : BasePlugin, IPluginConfig<PluginConfig>
             (!isPrime, Config.MinimumHourNonPrime, userInfo.CS2Playtime),
             (!isPrime, Config.MinimumLevelNonPrime, userInfo.SteamLevel),
             (!isPrime, Config.MinimumCS2LevelNonPrime, userInfo.CS2Level),
-            (true, Config.MinimumSteamAccountAgeInDays, (DateTime.Now - userInfo.SteamAccountAge).TotalDays),
+            (!isPrime, Config.MinimumSteamAccountAgeInDays, (DateTime.Now - userInfo.SteamAccountAge).TotalDays),
             (Config.BlockPrivateProfile, 1, userInfo.IsPrivate ? 0 : 1),
             (Config.BlockTradeBanned, 1, userInfo.IsTradeBanned ? 0 : 1),
             (Config.BlockGameBanned, 1, userInfo.IsGameBanned ? 0 : 1),
